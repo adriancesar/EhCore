@@ -1,0 +1,11 @@
+name: EhCore
+main: com.ehaqui.ehcore.EhCorePlugin
+version: 0.1
+author: Lucas Didur
+description: Core functions
+website: http://ehaqui.com
+commands:
+    ehcore:
+        description: Sends a message in the third person!
+        usage: /core <comandos>
+        aliases: [core]
