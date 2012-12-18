@@ -6,9 +6,10 @@ import com.ehaqui.ehcore.api.command.exception.CommandException;
 
 import org.bukkit.command.CommandSender;
 
-public interface CommandAnnotationProcessor {
-    Class<? extends Annotation> getAnnotationClass();
 
-    void process(CommandSender sender, CommandContext context, Annotation instance, Object[] args)
-            throws CommandException;
+public interface CommandAnnotationProcessor
+{
+    Class<? extends Annotation> getAnnotationClass();
+    
+    void process(CommandSender sender, CommandContext context, Annotation instance, Object[] args) throws CommandException;
 }

@@ -20,7 +20,7 @@ public class RequirementsProcessor implements CommandAnnotationProcessor
     @Override
     public void process(CommandSender sender, CommandContext context, Annotation instance, Object[] methodArgs) throws CommandException
     {
-        Requirements requirements = (Requirements) instance;        
+        Requirements requirements = (Requirements) instance;
         // Requirements
         if(requirements.vip())
         {
@@ -37,7 +37,7 @@ public class RequirementsProcessor implements CommandAnnotationProcessor
                 throw new RequirementMissingException("Você precisa ser Admin para usar este comando");
             }
         }
-
+        
     }
     
     // Returns whether a player has permission.
@@ -45,5 +45,5 @@ public class RequirementsProcessor implements CommandAnnotationProcessor
     {
         return sender.hasPermission(Settings.PREFIX_PERMISSION + "." + perm);
     }
-
+    
 }
