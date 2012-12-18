@@ -15,7 +15,8 @@ public class CommandException extends Exception
         super(Messaging.tryTranslate(message));
     }
     
-    public CommandException(String key, Object... replacements) {
+    public CommandException(String key, Object... replacements)
+    {
         super(String.format(key, replacements));
     }
     

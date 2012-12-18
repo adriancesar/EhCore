@@ -6,52 +6,40 @@ import java.util.logging.Level;
 
 import com.ehaqui.ehcore.api.util.Messaging;
 
-
-public class Injector
-{
+public class Injector {
     private final Class<?>[] argClasses;
-    private final Object[]   args;
-    
-    public Injector(Object... args)
-    {
+    private final Object[] args;
+
+    public Injector(Object... args) {
         this.args = args;
         argClasses = new Class[args.length];
-        for (int i = 0; i < args.length; ++i)
-        {
+        for (int i = 0; i < args.length; ++i) {
             argClasses[i] = args[i].getClass();
         }
     }
-    
-    public Object getInstance(Class<?> clazz)
-    {
-        try
-        {
+
+    public Object getInstance(Class<?> clazz) {
+        try {
             Constructor<?> ctr = clazz.getConstructor(argClasses);
             ctr.setAccessible(true);
             return ctr.newInstance(args);
-        } catch (NoSuchMethodException e)
-        {
-            try
-            {
+        } catch (NoSuchMethodException e) {
+            try {
                 return clazz.newInstance();
-            } catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Messaging.log(Level.SEVERE, "Error initializing commands class " + clazz + ": ");
                 ex.printStackTrace();
                 return null;
             }
-        } catch (InvocationTargetException e)
-        {
+        } catch (InvocationTargetException e) {
             Messaging.log(Level.SEVERE, "Error initializing commands class " + clazz + ": ");
             e.printStackTrace();
             return null;
-        } catch (InstantiationException e)
-        {
+        } catch (InstantiationException e) {
             Messaging.log(Level.SEVERE, "Error initializing commands class " + clazz + ": ");
             e.printStackTrace();
             return null;
-        } catch (IllegalAccessException e)
-        {
+        } catch (IllegalAccessException e) {
             Messaging.log(Level.SEVERE, "Error initializing commands class " + clazz + ": ");
             e.printStackTrace();
             return null;
