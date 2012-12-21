@@ -2,7 +2,7 @@ package com.ehaqui.ehcore.api.trade;
 
 import java.io.IOException;
 
-import net.minecraft.server.v1_4_5.MerchantRecipe;
+import net.minecraft.server.v1_4_6.MerchantRecipe;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -95,7 +95,7 @@ public class VillagerTradeOffer
      * @return - The first items the villager wants, in
      *         a netMinecraftServer itemstack
      */
-    public net.minecraft.server.v1_4_5.ItemStack getNMSCost1()
+    public net.minecraft.server.v1_4_6.ItemStack getNMSCost1()
     {
         return convertItemStackToNMS(this.Cost1);
     }
@@ -105,7 +105,7 @@ public class VillagerTradeOffer
      * @return - The second item the villager wants, in
      *         a netMinecraftServer itemstack
      */
-    public net.minecraft.server.v1_4_5.ItemStack getNMSCost2()
+    public net.minecraft.server.v1_4_6.ItemStack getNMSCost2()
     {
         return convertItemStackToNMS(this.Cost2);
     }
@@ -115,7 +115,7 @@ public class VillagerTradeOffer
      * @return - The item the villager is offering, in
      *         a netMinecraftServer itemstack
      */
-    public net.minecraft.server.v1_4_5.ItemStack getNMSOffer()
+    public net.minecraft.server.v1_4_6.ItemStack getNMSOffer()
     {
         return convertItemStackToNMS(this.Offer);
     }
@@ -128,13 +128,13 @@ public class VillagerTradeOffer
      * 
      *         Note: looses enchantments and metadata
      */
-    private net.minecraft.server.v1_4_5.ItemStack convertItemStackToNMS(ItemStack i)
+    private net.minecraft.server.v1_4_6.ItemStack convertItemStackToNMS(ItemStack i)
     {
         int amount = i.getAmount();
         int id = i.getType().getId();
         short durability = i.getDurability();
         
-        return new net.minecraft.server.v1_4_5.ItemStack(id, amount, durability);
+        return new net.minecraft.server.v1_4_6.ItemStack(id, amount, durability);
     }
     
     public void usage(Player player) throws NullTradeOfferException, IOException

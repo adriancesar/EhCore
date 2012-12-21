@@ -4,12 +4,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import net.minecraft.server.v1_4_5.EntityPlayer;
-import net.minecraft.server.v1_4_5.MerchantRecipeList;
-import net.minecraft.server.v1_4_5.Packet100OpenWindow;
-import net.minecraft.server.v1_4_5.Packet250CustomPayload;
+import net.minecraft.server.v1_4_6.EntityPlayer;
+import net.minecraft.server.v1_4_6.MerchantRecipeList;
+import net.minecraft.server.v1_4_6.Packet100OpenWindow;
+import net.minecraft.server.v1_4_6.Packet250CustomPayload;
 
-import org.bukkit.craftbukkit.v1_4_5.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_4_6.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import com.ehaqui.ehcore.api.trade.exception.NullTradeOfferException;
@@ -105,8 +105,8 @@ public class VillagerTradingLib
         
         Packet100OpenWindow tradeWindow = new Packet100OpenWindow(windowId, VillagerTradingInventoryTypeID, "", 1);
         
-        p.netServerHandler.sendPacket(tradeWindow);
-        p.netServerHandler.sendPacket(getVillagerOfferPacket(list, windowId));
+        p.playerConnection.sendPacket(tradeWindow);
+        p.playerConnection.sendPacket(getVillagerOfferPacket(list, windowId));
     }
     
     /**
