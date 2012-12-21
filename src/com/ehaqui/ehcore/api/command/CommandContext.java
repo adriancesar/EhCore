@@ -288,4 +288,9 @@ public class CommandContext
     {
         return args[0].equalsIgnoreCase(command);
     }
+    
+    public String[] getArgs()
+    {
+        return args;
+    }
 }
