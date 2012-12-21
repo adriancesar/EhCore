@@ -110,10 +110,12 @@ public class CommandManager
         Command cmd = method.getAnnotation(Command.class);
         CommandContext context = new CommandContext(sender, args);
         
-        if(context.argsLength() < cmd.min())
+        int var = cmd.modifiers().length > 0 ? 1 : 0; 
+        
+        if(context.argsLength() < (cmd.min() + var ))
             throw new CommandUsageException(Messages.COMMAND_TOO_FEW_ARGUMENTS, getUsage(args, cmd));
         
-        if(cmd.max() != -1 && context.argsLength() > cmd.max())
+        if(cmd.max() != -1 && context.argsLength() > (cmd.max() + var))
             throw new CommandUsageException(Messages.COMMAND_TOO_MANY_ARGUMENTS, getUsage(args, cmd));
         
         if(!cmd.flags().contains("*"))

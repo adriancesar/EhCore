@@ -12,7 +12,7 @@ public class CommandException extends Exception
     
     public CommandException(String message)
     {
-        super(Messaging.tryTranslate(message));
+        super(Messaging.tryTranslate("ERRO: " + message));
     }
     
     public CommandException(String key, Object... replacements)
