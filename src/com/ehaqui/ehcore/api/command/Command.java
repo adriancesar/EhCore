@@ -9,7 +9,9 @@ public @interface Command
     {
         String[] aliases();
         
-        String desc();
+        String[] modifiers() default "";
+                
+        String desc() default "";
         
         String flags() default "";
         
@@ -18,8 +20,6 @@ public @interface Command
         int max() default -1;
         
         int min() default 0;
-        
-        String[] modifiers() default "";
         
         String permission() default "";
         

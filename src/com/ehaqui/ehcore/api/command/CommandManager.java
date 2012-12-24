@@ -91,10 +91,10 @@ public class CommandManager
     // Attempt to execute a command.
     private void executeMethod(String[] args, CommandSender sender, Object[] methodArgs) throws CommandException
     {
-        String cmdName = args[0];
-        String modifier = args.length > 1 ? args[1] : "";
-        
-        Method method = commands.get(cmdName.toLowerCase() + " " + modifier.toLowerCase());
+        String cmdName = args[0];        
+        String cmds = getClosestCommandCommand(args);
+                        
+        Method method = commands.get(cmds);
         if(method == null)
             method = commands.get(cmdName.toLowerCase() + " *");
         
@@ -109,7 +109,7 @@ public class CommandManager
         
         Command cmd = method.getAnnotation(Command.class);
         CommandContext context = new CommandContext(sender, args);
-               
+        
         if(context.argsLength() < cmd.min())
             throw new CommandUsageException(Messages.COMMAND_TOO_FEW_ARGUMENTS, getUsage(args, cmd));
         
@@ -206,26 +206,70 @@ public class CommandManager
      *            The modifier to use as the base
      * @return The closest modifier, or empty
      */
-    public String getClosestCommandModifier(String command, String modifier)
+    public String getClosestCommandCommand(String command, String[] args)
     {
+        String modifier = StringHelper.join(args);
+        
         int minDist = Integer.MAX_VALUE;
         command = command.toLowerCase();
         String closest = "";
         for (String cmd : commands.keySet())
         {
-            String[] split = cmd.split(" ");
-            if(split.length <= 1 || !split[0].equals(command))
-                continue;
-            int distance = StringHelper.getLevenshteinDistance(modifier, split[1]);
+            int distance = StringHelper.getLevenshteinDistance(modifier, cmd);
             if(minDist > distance)
             {
                 minDist = distance;
-                closest = split[1];
+                closest = cmd;
             }
         }
         
         return closest;
     }
+    
+    public String getClosestCommandCommand(String[] args)
+    {
+        String modifiers = StringHelper.join(args);
+
+        HashSet<String> modifierList = new HashSet<String>();
+
+        for (String cmd : commands.keySet())
+        {
+            modifierList.add(StringHelper.greatestCommonPrefix(cmd, modifiers));
+        }
+        
+        String modifier = "";
+
+        for(String a : modifierList)
+        {
+            if(modifier.length() < a.length())
+                modifier = a;
+        }
+        
+        return modifier;
+    }
+    
+    public String getClosestCommandModifier(String command, String[] args)
+    {
+        String modifiers = command + " " + StringHelper.join(args);
+
+        HashSet<String> modifierList = new HashSet<String>();
+
+        for (String cmd : commands.keySet())
+        {
+            modifierList.add(StringHelper.greatestCommonPrefix(cmd, modifiers));
+        }
+        
+        String modifier = "";
+
+        for(String a : modifierList)
+        {
+            if(modifier.length() < a.length())
+                modifier = a;
+        }
+        
+        return modifier;
+    }
+    
     
     /**
      * Gets the {@link CommandInfo} for the given top level command and
@@ -297,9 +341,9 @@ public class CommandManager
      *            The modifier to check (may be empty)
      * @return Whether the command is handled
      */
-    public boolean hasCommand(org.bukkit.command.Command cmd, String modifier)
-    {
-        return commands.containsKey(cmd.getName().toLowerCase() + " " + modifier.toLowerCase()) || commands.containsKey(cmd.getName().toLowerCase() + " *");
+    public boolean hasCommand(org.bukkit.command.Command cmd, String[] args)
+    {               
+        return commands.containsKey(getClosestCommandModifier(cmd.getName().toLowerCase(), args)) || commands.containsKey(cmd.getName().toLowerCase() + " *");
     }
     
     // Returns whether a CommandSenders has permission.
@@ -478,4 +522,8 @@ public class CommandManager
     
     // Logger for general errors.
     private static final Logger logger = Logger.getLogger(CommandManager.class.getCanonicalName());
+    
+    
+    
+    
 }

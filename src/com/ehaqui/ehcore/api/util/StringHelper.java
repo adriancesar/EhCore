@@ -15,14 +15,16 @@ public class StringHelper
     
     public static int getLevenshteinDistance(String s, String t)
     {
-        if(s == null || t == null) throw new IllegalArgumentException("Strings must not be null");
+        if(s == null || t == null)
+            throw new IllegalArgumentException("Strings must not be null");
         
         int n = s.length(); // length of s
         int m = t.length(); // length of t
         
-        if(n == 0) return m;
-        else
-            if(m == 0) return n;
+        if(n == 0)
+            return m;
+        else if(m == 0)
+            return n;
         
         int p[] = new int[n + 1]; // 'previous' cost array, horizontally
         int d[] = new int[n + 1]; // cost array, horizontally
@@ -94,9 +96,33 @@ public class StringHelper
         String highlight = Setting.HIGHLIGHT_COLOUR.asString();
         return highlight + "=====[ " + string.toString() + highlight + " ]=====";
     }
-
+    
     public static String firstUpCase(String string)
     {
         return Character.toUpperCase(string.charAt(0)) + string.substring(1);
+    }
+    
+    public static String join(String[] string)
+    {
+        StringBuffer result = new StringBuffer();
+        for (int i = 0; i < string.length; i++)
+        {
+            result.append(string[i]);
+            result.append(" ");
+        }
+        return result.toString();
+    }
+    
+    public static String greatestCommonPrefix(String a, String b)
+    {
+        int minLength = Math.min(a.length(), b.length());
+        for (int i = 0; i < minLength; i++)
+        {
+            if(a.charAt(i) != b.charAt(i))
+            {
+                return a.substring(0, i);
+            }
+        }
+        return a.substring(0, minLength);
     }
 }
