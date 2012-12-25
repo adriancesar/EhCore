@@ -135,12 +135,12 @@ public class CommandContext
     
     public double getDouble(int index) throws NumberFormatException
     {
-        return Double.parseDouble(args[index + 1]);
+        return Double.parseDouble(args[index]);
     }
     
     public double getDouble(int index, double def) throws NumberFormatException
     {
-        return index + 1 < args.length ? Double.parseDouble(args[index + 1]) : def;
+        return index + 1 < args.length ? Double.parseDouble(args[index]) : def;
     }
     
     public String getFlag(String ch)
@@ -198,16 +198,16 @@ public class CommandContext
     
     public int getInteger(int index) throws NumberFormatException
     {
-        return Integer.parseInt(args[index + 1]);
+        return Integer.parseInt(args[index]);
     }
     
     public int getInteger(int index, int def) throws NumberFormatException
     {
-        if(index + 1 < args.length)
+        if(index < args.length)
         {
             try
             {
-                return Integer.parseInt(args[index + 1]);
+                return Integer.parseInt(args[index]);
             } catch (NumberFormatException ex)
             {
             }
@@ -222,9 +222,8 @@ public class CommandContext
     
     public String getJoinedStrings(int initialIndex, char delimiter)
     {
-        initialIndex = initialIndex + 1;
-        StringBuilder buffer = new StringBuilder(args[initialIndex]);
-        for (int i = initialIndex + 1; i < args.length; i++)
+        StringBuilder buffer = new StringBuilder();
+        for (int i = initialIndex; i < args.length; i++)
             buffer.append(delimiter).append(args[i]);
         return buffer.toString().trim();
     }
@@ -256,12 +255,17 @@ public class CommandContext
     
     public String getString(int index)
     {
-        return args[index + 1];
+        return args[index];
     }
     
     public String getString(int index, String def)
     {
-        return index + 1 < args.length ? args[index + 1] : def;
+        return index < args.length ? args[index] : def;
+    }
+    
+    public boolean getBoolean(int index)
+    {
+        return Boolean.parseBoolean(args[index]);
     }
     
     public Map<String, String> getValueFlags()
@@ -292,5 +296,5 @@ public class CommandContext
     public String[] getArgs()
     {
         return args;
-    }
+    }    
 }
