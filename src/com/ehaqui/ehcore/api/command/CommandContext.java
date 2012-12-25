@@ -263,9 +263,18 @@ public class CommandContext
         return index < args.length ? args[index] : def;
     }
     
-    public boolean getBoolean(int index)
+    public boolean getBoolean(int index) throws Exception
     {
-        return Boolean.parseBoolean(args[index]);
+        boolean val;
+        try
+        {
+            val = Boolean.parseBoolean(args[index]);
+        } catch (Exception e)
+        {
+            throw new Exception("Valor precisa ser boolean!");
+        }
+        
+        return val;
     }
     
     public Map<String, String> getValueFlags()

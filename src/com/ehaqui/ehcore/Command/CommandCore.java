@@ -13,7 +13,6 @@ public class CommandCore implements CommandExecutor
 
     public CommandCore(EhCorePlugin ehCorePlugin)
     {
-        // TODO Auto-generated constructor stub
     }
 
     @Override
