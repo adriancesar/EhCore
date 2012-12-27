@@ -14,12 +14,14 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import com.ehaqui.ehcore.api.command.exception.CommandException;
 import com.ehaqui.ehcore.api.command.exception.CommandUsageException;
+import com.ehaqui.ehcore.api.command.exception.LimitExceededException;
 import com.ehaqui.ehcore.api.command.exception.NoPermissionsException;
 import com.ehaqui.ehcore.api.command.exception.ServerCommandException;
 import com.ehaqui.ehcore.api.command.exception.UnhandledCommandException;
@@ -174,6 +176,10 @@ public class CommandManager
             } catch (UnhandledCommandException ex)
             {
                 return false;
+            } catch (LimitExceededException ex)
+            {
+                Messaging.sendError(sender, ex.getMessage());
+                Messaging.send(sender, "Seu limite é " + ChatColor.RED + ex.getLimit());
             } catch (WrappedCommandException ex)
             {
                 throw ex.getCause();
@@ -183,7 +189,7 @@ public class CommandManager
             } catch (NumberFormatException ex)
             {
                 Messaging.sendError(sender, Messages.COMMAND_INVALID_NUMBER);
-            }
+            } 
         } catch (Throwable ex)
         {
             ex.printStackTrace();
