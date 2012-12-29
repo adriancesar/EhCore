@@ -355,14 +355,14 @@ public class CommandManager
     // Returns whether a CommandSenders has permission.
     private boolean hasPermission(CommandSender sender, String perm)
     {
-        return sender.hasPermission("citizens." + perm);
+        return sender.hasPermission(perm);
     }
     
     // Returns whether a player has access to a command.
     private boolean hasPermission(Method method, CommandSender sender)
     {
         Command cmd = method.getAnnotation(Command.class);
-        if(cmd.permission().isEmpty() || hasPermission(sender, cmd.permission()) || hasPermission(sender, "admin"))
+        if(cmd.permission().isEmpty() || hasPermission(sender, cmd.permission()) || hasPermission(sender, "ehcore.admin"))
             return true;
         
         return false;

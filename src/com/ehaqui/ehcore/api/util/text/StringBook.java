@@ -248,7 +248,14 @@ public class StringBook
             
         }
         
-        return result.toString();
+        String result_page = result.toString();
+        
+        for (ChatColor color : ChatColor.values())
+        {
+            result_page = result_page.replaceAll(String.format("&%c", color.getChar()), color.toString());
+        }
+        
+        return result_page;
         
         
     }
