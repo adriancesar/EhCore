@@ -10,5 +10,10 @@ public class NoPermissionsException extends CommandException
         super(Messages.COMMAND_NO_PERMISSION);
     }
     
+    public NoPermissionsException(String message)
+    {
+        super(message);
+    }
+    
     private static final long serialVersionUID = -602374621030168291L;
 }
