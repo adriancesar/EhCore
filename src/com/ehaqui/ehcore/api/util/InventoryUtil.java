@@ -1,14 +1,21 @@
 package com.ehaqui.ehcore.api.util;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.ShapelessRecipe;
 
 
 public class InventoryUtil
@@ -203,6 +210,48 @@ public class InventoryUtil
         items = stackItems(items, first, last);
         Arrays.sort(items, first, last, new ItemComparator());
         return items;
+    }
+    
+    /**
+     * 
+     * @param item
+     *            item to uncraft
+     * @return list of items
+     */
+    public static List<ItemStack> uncraft(ItemStack item)
+    {
+        List<Recipe> recipes = Bukkit.getRecipesFor(item);
+        if(recipes.size() < 0)
+        {
+            return new ArrayList<ItemStack>();
+        }
+        Recipe first = recipes.get(0);
+        List<ItemStack> returns = new ArrayList<ItemStack>();
+        
+        if(first instanceof ShapedRecipe)
+        {
+            ShapedRecipe sr = (ShapedRecipe) first;
+            Map<Character, ItemStack> chart = sr.getIngredientMap();
+            
+            for (ItemStack is : chart.values())
+            {
+                if(is != null)
+                    returns.add(is);
+            }
+        }
+        else if(first instanceof ShapelessRecipe)
+        {
+            ShapelessRecipe sr = (ShapelessRecipe) first;
+            List<ItemStack> x = sr.getIngredientList();
+            
+            for (ItemStack is : x)
+            {
+                if(is != null)
+                    returns.add(is);
+            }
+        }
+        
+        return returns;
     }
     
 }

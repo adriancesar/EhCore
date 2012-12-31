@@ -39,7 +39,7 @@ public class Settings
     private final DataKey root;
 
     public Settings(File folder) {
-        config = new YamlStorage(new File(folder, "config.yml"), "Citizens Configuration");
+        config = new YamlStorage(new File(folder, "config.yml"), "EhCore Configuration");
         root = config.getKey("");
 
         config.load();

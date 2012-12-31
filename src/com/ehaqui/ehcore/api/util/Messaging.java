@@ -25,7 +25,7 @@ public class Messaging
     
     public static void log(Level level, Object... msg)
     {
-        Bukkit.getLogger().log(level, "[Citizens] " + SPACE.join(msg));
+        Bukkit.getLogger().log(level, "[EhCore] " + SPACE.join(msg));
     }
     
     public static void log(Object... msg)

@@ -31,7 +31,7 @@ public class LogManager
         log.info(pluginName + " " + text);
     }
 
-    public void info(String text, Object... txt)
+    public static void info(String text, Object... txt)
     {
         log.info(pluginName + " " + String.format(text, txt));
     }
