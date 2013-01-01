@@ -221,7 +221,7 @@ public class InventoryUtil
     public static List<ItemStack> uncraft(ItemStack item)
     {
         List<Recipe> recipes = Bukkit.getRecipesFor(item);
-        if(recipes.size() < 0)
+        if(recipes.size() <= 0)
         {
             return new ArrayList<ItemStack>();
         }
