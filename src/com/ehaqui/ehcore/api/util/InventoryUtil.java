@@ -220,28 +220,43 @@ public class InventoryUtil
      */
     public static List<ItemStack> uncraft(ItemStack item)
     {
-        List<Recipe> recipes = Bukkit.getRecipesFor(item);
-        if(recipes.size() <= 0)
-        {
-            return new ArrayList<ItemStack>();
-        }
-        Recipe first = recipes.get(0);
         List<ItemStack> returns = new ArrayList<ItemStack>();
+        List<Recipe> recipes = Bukkit.getRecipesFor(item);
         
-        if(first instanceof ShapedRecipe)
+        if(recipes.size() <= 0)
+            return returns;
+        
+        Recipe recipe = null;
+        
+        for (Recipe r : recipes)
         {
-            ShapedRecipe sr = (ShapedRecipe) first;
+            if(r.getResult().isSimilar(item))
+            {
+                if(r.getResult().getAmount() != item.getAmount())
+                    continue;
+                
+                recipe = r;
+                break;
+            }
+        }
+        
+        if(recipe == null)
+            return returns;
+        
+        if(recipe instanceof ShapedRecipe)
+        {
+            ShapedRecipe sr = (ShapedRecipe) recipe;
             Map<Character, ItemStack> chart = sr.getIngredientMap();
-            
+                        
             for (ItemStack is : chart.values())
             {
                 if(is != null)
                     returns.add(is);
             }
         }
-        else if(first instanceof ShapelessRecipe)
+        else if(recipe instanceof ShapelessRecipe)
         {
-            ShapelessRecipe sr = (ShapelessRecipe) first;
+            ShapelessRecipe sr = (ShapelessRecipe) recipe;
             List<ItemStack> x = sr.getIngredientList();
             
             for (ItemStack is : x)
