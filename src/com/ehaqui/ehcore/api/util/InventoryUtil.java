@@ -10,12 +10,13 @@ import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
+
+import com.ehaqui.ehcore.Util.LogManager;
 
 
 public class InventoryUtil
@@ -59,8 +60,6 @@ public class InventoryUtil
      */
     public static boolean addItem(ItemStack itemStack, Inventory inventory, Location dropLocation)
     {
-        
-        
         ItemStack remaining = inventory.addItem(itemStack).get(0);
         
         if(remaining != null)
@@ -68,9 +67,8 @@ public class InventoryUtil
             dropLocation.getWorld().dropItemNaturally(dropLocation, remaining);
             return true;
         }
+        
         return false;
-        
-        
     }
     
     /**
@@ -80,15 +78,16 @@ public class InventoryUtil
      *            item stack
      * @param inventory
      *            inventory
+     * @throws Exception
      */
-    public static void removeItem(ItemStack itemStack, Inventory inventory)
+    public static void removeItem(ItemStack itemStack, Inventory inventory) throws Exception
     {
         
         ItemStack remaining = inventory.removeItem(itemStack).get(0);
         
         if(remaining != null)
         {
-            //SagaLogger.warning(InventoryUtil.class, "failed to remove " + itemStack + " from the inventory");
+            throw new Exception("failed to remove " + itemStack + " from the inventory");
         }
         
     }
@@ -100,17 +99,17 @@ public class InventoryUtil
      *            material
      * @param toRemove
      *            amount to remove
-     * @param removeEnch
-     *            if true, then enchanted items will also be removed
-     * @param player
-     *            player
+     * @param inventory
+     *            inventory to remove
+     * @return
+     * 
      */
-    public static void removeItem(Material material, Integer toRemove, boolean removeEnch, Player player)
+    public static boolean removeItem(Material material, Integer toRemove, Inventory inventory)
     {
-        
-        
-        Inventory inventory = player.getInventory();
         Integer toDelete = toRemove;
+        
+        if(getItemCount(material, inventory.getContents()) < toDelete)
+            return false;
         
         HashMap<Integer, ? extends ItemStack> all = inventory.all(material);
         Set<Integer> slots = all.keySet();
@@ -119,10 +118,6 @@ public class InventoryUtil
         {
             
             ItemStack itemStack = inventory.getItem(first);
-            
-            // Ignore enchanted:
-            if(!removeEnch && itemStack.getEnchantments().size() > 0)
-                continue;
             
             int amount = itemStack.getAmount();
             
@@ -150,10 +145,11 @@ public class InventoryUtil
         
         if(toDelete > 0)
         {
-            //SagaLogger.severe("Failed to remove " + toDelete + " " + material + " from players " + player.getName() + " inventory");
+            LogManager.severe("Failed to remove " + toDelete + " " + material + " from inventory");
+            return false;
         }
         
-        
+        return true;
     }
     
     /**
@@ -247,7 +243,7 @@ public class InventoryUtil
         {
             ShapedRecipe sr = (ShapedRecipe) recipe;
             Map<Character, ItemStack> chart = sr.getIngredientMap();
-                        
+            
             for (ItemStack is : chart.values())
             {
                 if(is != null)
