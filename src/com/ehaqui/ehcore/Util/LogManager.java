@@ -46,7 +46,7 @@ public class LogManager
         log.warning(pluginName + " " + text);
     }
 
-    public void aviso(String text, Object... txt)
+    public static void aviso(String text, Object... txt)
     {
         log.warning(pluginName + " " + String.format(text, txt));
     }
@@ -91,5 +91,10 @@ public class LogManager
     public static void sendError(CommandSender sender, String error)
     {
         sender.sendMessage(ChatColor.RED + error);
+    }
+
+    public static void warning(String text)
+    {
+        log.warning(pluginName + " " + text);
     }
 }

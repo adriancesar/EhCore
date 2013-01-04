@@ -33,7 +33,7 @@ public class Settings
     public static String        motd                       = "..:: EhAqui ::.. Instável devido                               Ataques!!! :(";
     
     
-    public static String PREFIX_PERMISSION = "ehvip";
+    public static String PREFIX_PERMISSION = "ehcore";
     
     private final Storage config;
     private final DataKey root;
