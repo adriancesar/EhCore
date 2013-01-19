@@ -5,6 +5,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.ehaqui.ehcore.Command.CommandCore;
 import com.ehaqui.ehcore.Util.EhUtil;
 import com.ehaqui.ehcore.Util.LogManager;
+import com.ehaqui.ehcore.tps.TPS;
 
 
 public class EhCorePlugin extends JavaPlugin
@@ -39,6 +40,8 @@ public class EhCorePlugin extends JavaPlugin
             LogManager.info("SimpleVanish found. Enable Features!");
         }
 
+        TPS.setup(this);
+        
         getCommand("ehcore").setExecutor(new CommandCore(this));
     }
 
