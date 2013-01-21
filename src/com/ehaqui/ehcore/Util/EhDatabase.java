@@ -156,6 +156,27 @@ public class EhDatabase
         }
     }
     
+    public void checkTable(String tableName, String sql)
+    {
+        DatabaseMetaData dbm = null;
+        
+        try
+        {
+            dbm = this.open().getMetaData();
+            ResultSet tables = dbm.getTables(null, null, tableName, null);
+            
+            if(!tables.next())
+            {
+                plugin.getLogger().warning("Criando tablela '" + tableName + "'");
+                update(sql);
+            }
+            
+        } catch (Exception e)
+        {
+            plugin.getLogger().warning(e.getMessage());
+        }
+    }
+    
     public boolean createTable(String tableName, String[] columns, String[] dims)
     {
         try
