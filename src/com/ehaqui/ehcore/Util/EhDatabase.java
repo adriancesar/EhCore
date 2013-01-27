@@ -167,7 +167,7 @@ public class EhDatabase
             
             if(!tables.next())
             {
-                plugin.getLogger().warning("Criando tablela '" + tableName + "'");
+                plugin.getLogger().info("Criando tablela '" + tableName + "'");
                 update(sql);
             }
             
