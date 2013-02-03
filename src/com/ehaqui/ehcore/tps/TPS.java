@@ -1,29 +1,38 @@
 package com.ehaqui.ehcore.tps;
 
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 
 public class TPS
 {
-    public static int  tps    = 0;
-    public static long second = 0;
+    public static int        tps    = 0;
+    public static long       second = 0;
+    
+    public static BukkitTask task;
     
     public static float getServerTPS()
     {
         return tps;
     }
     
+    public static long getSeconds()
+    {
+        return second;
+    }
+    
     public static void setup(Plugin plugin)
     {
-        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+        task = new BukkitRunnable() {
             long sec;
             int  ticks;
             
             @Override
             public void run()
             {
-                sec = System.currentTimeMillis() / 1000;
+                sec = (System.currentTimeMillis() / 1000);
+                
                 if(second == sec)
                 {
                     ticks++;
@@ -31,10 +40,24 @@ public class TPS
                 else
                 {
                     second = sec;
-                    tps = tps == 0 ? ticks : (tps + ticks) / 2;
+                    tps = (tps == 0 ? ticks : ((tps + ticks) / 2));
                     ticks = 0;
+                    
+                    System.out.print("TPS = " + tps);
                 }
             }
-        }, 20, 1);
+        }.runTaskTimer(plugin, 20, 1);
     }
+    
+    public static void cancel()
+    {
+        task.cancel();
+    }
+    
+    public static BukkitTask getTask()
+    {
+        return task;
+    }
+    
+    
 }
