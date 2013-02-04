@@ -1,4 +1,4 @@
-package com.ehaqui.ehcore.Util;
+package com.ehaqui.ehcore.util;
 
 import java.util.logging.Logger;
 
@@ -12,7 +12,7 @@ import org.bukkit.plugin.Plugin;
 public class EhUtil
 {
 
-    private String pluginPrefix;
+    private static String pluginPrefix;
     private static String prefixPermission;
 
     public static Logger  log;
@@ -81,7 +81,7 @@ public class EhUtil
         }
     }
 
-    public void sendMessage(Player player, String message, Object... txt)
+    public static void sendMessage(Player player, String message, Object... txt)
     {
         String[] messages = message.split("\n");
 
@@ -118,7 +118,7 @@ public class EhUtil
         }
     }
 
-    public void sendMessage(CommandSender sender, String message, Object... txt)
+    public static void sendMessage(CommandSender sender, String message, Object... txt)
     {
         String[] messages = message.split("\n");
 
@@ -146,7 +146,7 @@ public class EhUtil
      * @param message
      * @param prefix
      */
-    public void sendMessage(Player player, String message, boolean prefix)
+    public static void sendMessage(Player player, String message, boolean prefix)
     {
         if(prefix)
         {
@@ -181,7 +181,7 @@ public class EhUtil
      * @param prefix
      * @param txt
      */
-    public void sendMessage(Player player, String message, boolean prefix, Object... txt)
+    public static void sendMessage(Player player, String message, boolean prefix, Object... txt)
     {
         if(prefix)
         {
@@ -219,7 +219,7 @@ public class EhUtil
      * 
      * @param message
      */
-    public void broadcastMessage(String message)
+    public static void broadcastMessage(String message)
     {
         String[] messages = message.split("\n");
 
@@ -229,7 +229,7 @@ public class EhUtil
         }
     }
 
-    public void broadcastMessage(String message, Object... txt)
+    public static void broadcastMessage(String message, Object... txt)
     {
         String[] messages = message.split("\n");
 
@@ -239,7 +239,7 @@ public class EhUtil
         }
     }
 
-    public void sendMessage(String name, String message)
+    public static void sendMessage(String name, String message)
     {
         Player player = Bukkit.getPlayer(name);
 
@@ -253,7 +253,7 @@ public class EhUtil
         }
     }
 
-    public void sendMessage(String name, String message, boolean prefix)
+    public static void sendMessage(String name, String message, boolean prefix)
     {
         Player player = Bukkit.getPlayer(name);
 

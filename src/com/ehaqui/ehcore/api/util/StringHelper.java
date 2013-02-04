@@ -125,4 +125,43 @@ public class StringHelper
         }
         return a.substring(0, minLength);
     }
+    
+    
+    public static String createBar(int percetage)
+    {
+        ChatColor wrapColour = ChatColor.WHITE;
+        String bar = "";
+        
+        ChatColor colour;
+        if(percetage >= 20)
+        {
+            colour = ChatColor.GREEN;
+        }
+        else if(percetage >= 18)
+        {
+            colour = ChatColor.GREEN;
+        }
+        else if(percetage >= 15)
+        {
+            colour = ChatColor.YELLOW;
+        }
+        else
+        {
+            colour = ChatColor.RED;
+        }
+        
+        int looped = 0;
+        while (looped++ < (percetage / 5))
+        {
+            bar += '#';
+        }
+        
+        bar += ChatColor.WHITE;
+        while (looped++ <= 20)
+        {
+            bar += ChatColor.GRAY + "_";
+        }
+        
+        return wrapColour + "[" + colour + bar + wrapColour + "]";
+    }
 }

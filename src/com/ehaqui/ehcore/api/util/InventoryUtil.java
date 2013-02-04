@@ -16,7 +16,7 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 
-import com.ehaqui.ehcore.Util.LogManager;
+import com.ehaqui.ehcore.util.LogManager;
 
 
 public class InventoryUtil

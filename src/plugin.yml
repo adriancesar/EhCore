@@ -9,3 +9,6 @@ commands:
         description: Sends a message in the third person!
         usage: /core <comandos>
         aliases: [core]
+    lag:
+        description: Gets the server TPS
+        usage: /lag

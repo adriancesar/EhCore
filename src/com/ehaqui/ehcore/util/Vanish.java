@@ -1,4 +1,4 @@
-package com.ehaqui.ehcore.Util;
+package com.ehaqui.ehcore.util;
 
 import java.util.List;
 
