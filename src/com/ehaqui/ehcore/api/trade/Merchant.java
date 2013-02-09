@@ -1,39 +1,33 @@
-package com.ehaqui.ehcore.api.trade;
-
-import net.minecraft.server.v1_4_R1.EntityVillager;
-import net.minecraft.server.v1_4_R1.MerchantRecipeList;
-import net.minecraft.server.v1_4_R1.NBTTagCompound;
-
-import org.bukkit.craftbukkit.v1_4_R1.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_4_R1.entity.CraftVillager;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Villager;
-
-
 /**
  * 
  * This software is part of the MerchantAPI
  * 
  * @author Seppe Volkaerts (Cybermaxke)
  * 
- *         This api allows plugin developers to create on a easy way new
- *         merchants they can open without villagers and adding as many
- *         offers they want.
+ * This api allows plugin developers to create on a easy way new
+ * merchants they can open without villagers and adding as many 
+ * offers they want.
  * 
- *         MerchantAPI is free software: you can redistribute it and/or modify
- *         it under the terms of the GNU General Public License as published by
- *         the Free Software Foundation, either version 3 of the License, or
- *         any later version.
- * 
- *         MerchantAPI is distributed in the hope that it will be useful,
- *         but WITHOUT ANY WARRANTY; without even the implied warranty of
- *         MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *         GNU General Public License for more details.
- * 
- *         You should have received a copy of the GNU General Public License
- *         along with MerchantAPI. If not, see <http://www.gnu.org/licenses/>.
+ * MerchantAPI is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or 
+ * any later version.
+ *  
+ * MerchantAPI is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with MerchantAPI. If not, see <http://www.gnu.org/licenses/>.
  * 
  */
+package com.ehaqui.ehcore.api.trade;
+
+import org.bukkit.craftbukkit.v1_4_R1.entity.CraftPlayer;
+import org.bukkit.entity.Player;
+
+
 public class Merchant
 {
     private NMSMerchant h;
@@ -138,27 +132,6 @@ public class Merchant
     public void openTrading(Player player)
     {
         this.h.openTrading(((CraftPlayer) player).getHandle());
-    }
-    
-    /**
-     * Sets all the offers of a merchant to a villager with removing the old ones.
-     * 
-     * @param villager
-     *            The villager.
-     * @param merchant
-     *            The merchant.
-     */
-    public void setToVillager(Villager villager, Merchant merchant)
-    {
-        EntityVillager v = ((CraftVillager) villager).getHandle();
-        
-        NBTTagCompound t = new NBTTagCompound();
-        v.b(t);
-        
-        MerchantRecipeList l = merchant.getOffers().getHandle();
-        t.setCompound("Offers", l.a());
-        
-        v.a(t);
     }
     
     /**

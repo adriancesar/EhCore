@@ -37,15 +37,94 @@ public class CommandCore
         long memMax = Runtime.getRuntime().maxMemory() / 1048576;
         long memFree = memMax - memUsed;
         long percentageFree = (memUsed * 100) / memMax;
-        Messaging.send(player, StringHelper.createBar((int) percentageFree) + "&7/Mem &fU=&c" + memUsed + "M &fF=&a" + memFree + "M &fT=&e" + memMax + "M &f" + percentageFree + "%");
+        Messaging.send(player, StringHelper.createBar((int) percentageFree, true) + "&7/Mem &fU=&c" + memUsed + "M &fF=&a" + memFree + "M &fT=&e" + memMax + "M &f" + percentageFree + "%");
+        
+        // Chunk
+        int chunkloaded = 0;
+        
+        for(World w : Bukkit.getWorlds())
+            chunkloaded += w.getLoadedChunks().length;
+        
+        int chunkPercentage = ((chunkloaded * 100) / (getChunkLimit() * Bukkit.getOnlinePlayers().length));
+        Messaging.send(player, StringHelper.createBar(chunkPercentage, true) + "&7/Chunk loaded &a" + chunkloaded + " / " + getChunkLimit() * Bukkit.getOnlinePlayers().length + " = " + chunkPercentage + "%");
         
         // TPS 1s
         Messaging.send(player, getLagMeterBar(TPS.getTPS()) + "&7/1sec TPS &a" + TPS.getTPS());
         // TPS 60s
         Messaging.send(player, getLagMeterBar(TPS.getAverageTPS()) + "&7/1min  TPS &a" + TPS.getAverageTPS() + " &favg");
         // TPS time
-        float percentageTime = (100 * TPS.getTimeTPS()) / 50;
-        Messaging.send(player, StringHelper.createBar((int) percentageTime) + "&7/Time : " + TPS.getTimeTPS() + "ms");
+        float percentageTime = (100 * TPS.getTimeTPS()) / 10;
+        Messaging.send(player, StringHelper.createBar((int) percentageTime, true) + "&7/Time : " + TPS.getTimeTPS() + "ms");
+    }
+    
+    private int getChunkLimit()
+    {
+        int limitByChunk = 0;
+        
+        switch (Bukkit.getViewDistance())
+        {
+            case 1:
+                limitByChunk = 9;
+                break;
+                
+            case 2:
+                limitByChunk = 25;
+                break;
+                
+            case 3:
+                limitByChunk = 49;
+                break;
+                
+            case 4:
+                limitByChunk = 81;
+                break;
+                
+            case 5:
+                limitByChunk = 121;
+                break;
+                
+            case 6:
+                limitByChunk = 169;
+                break;
+                
+            case 7:
+                limitByChunk = 225;
+                break;
+                
+            case 8:
+                limitByChunk = 289;
+                break;
+                
+            case 9:
+                limitByChunk = 361;
+                break;
+                
+            case 10:
+                limitByChunk = 441;
+                break;
+                
+            case 11:
+                limitByChunk = 529;
+                break;
+                
+            case 12:
+                limitByChunk = 625;
+                break;
+                
+            case 13:
+                limitByChunk = 729;
+                break;
+                
+            case 14:
+                limitByChunk = 841;
+                break;
+                
+            case 15:
+                limitByChunk = 961;
+                break;
+        }
+        
+        return limitByChunk;
     }
     
     public int getEntities()
