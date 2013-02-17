@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import com.ehaqui.ehcore.Settings.Setting;
 import com.google.common.base.Joiner;
@@ -33,6 +34,16 @@ public class Messaging
         log(Level.INFO, msg);
     }
     
+    public static void send(String name, Object... msg)
+    {
+        Player sender = Bukkit.getPlayer(name);
+        
+        if(sender == null)
+            return;
+        
+        sendMessageTo(sender, SPACE.join(msg));
+    }
+    
     public static void send(CommandSender sender, Object... msg)
     {
         sendMessageTo(sender, SPACE.join(msg));
@@ -45,6 +56,8 @@ public class Messaging
     
     private static void sendMessageTo(CommandSender sender, String rawMessage)
     {
+        
+            
         rawMessage = StringHelper.parseColors(rawMessage);
         for (String message : CHAT_NEWLINE_SPLITTER.split(rawMessage))
         {
