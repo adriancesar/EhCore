@@ -10,6 +10,7 @@ import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
@@ -28,19 +29,28 @@ public class InventoryUtil
      * 
      * @param material
      *            item material
+     * @param enchantList 
      * @param items
      *            inventory contents
      * @return item count
      */
-    public static Integer getItemCount(Material material, ItemStack[] items)
+    public static Integer getItemCount(ItemStack item, ItemStack[] items)
     {
+        Material material = item.getType();
+        Map<Enchantment, Integer> enchantList = item.getEnchantments();
         
         int count = 0;
         for (int i = 0; i < items.length; i++)
         {
             if(items[i] != null && items[i].getType().equals(material) && items[i].getDurability() == 0 && items[i].getEnchantments().size() == 0)
             {
-                count += items[i].getAmount();
+                if(enchantList != null)
+                {
+                    if(enchantList.equals(items[i].getEnchantments()))
+                        count += items[i].getAmount();
+                }
+                else
+                    count += items[i].getAmount();
             }
         }
         return count;
@@ -104,11 +114,12 @@ public class InventoryUtil
      * @return
      * 
      */
-    public static boolean removeItem(Material material, Integer toRemove, Inventory inventory)
+    public static boolean removeItem(ItemStack item, Integer toRemove, Inventory inventory)
     {
         Integer toDelete = toRemove;
+        Material material = item.getType();
         
-        if(getItemCount(material, inventory.getContents()) < toDelete)
+        if(getItemCount(item, inventory.getContents()) < toDelete)
             return false;
         
         HashMap<Integer, ? extends ItemStack> all = inventory.all(material);
