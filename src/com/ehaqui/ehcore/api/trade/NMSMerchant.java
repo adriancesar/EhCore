@@ -24,11 +24,11 @@
  */
 package com.ehaqui.ehcore.api.trade;
 
-import net.minecraft.server.v1_4_R1.EntityHuman;
-import net.minecraft.server.v1_4_R1.EntityPlayer;
-import net.minecraft.server.v1_4_R1.IMerchant;
-import net.minecraft.server.v1_4_R1.MerchantRecipe;
-import net.minecraft.server.v1_4_R1.MerchantRecipeList;
+import net.minecraft.server.v1_5_R1.EntityHuman;
+import net.minecraft.server.v1_5_R1.EntityPlayer;
+import net.minecraft.server.v1_5_R1.IMerchant;
+import net.minecraft.server.v1_5_R1.MerchantRecipe;
+import net.minecraft.server.v1_5_R1.MerchantRecipeList;
 
 
 public class NMSMerchant implements IMerchant
@@ -64,7 +64,7 @@ public class NMSMerchant implements IMerchant
      *            The customer.
      */
     @Override
-    public void b_(EntityHuman player)
+    public void a(EntityHuman player)
     {
         this.c = player;
     }
@@ -111,6 +111,6 @@ public class NMSMerchant implements IMerchant
     public void openTrading(EntityPlayer player)
     {
         this.c = player;
-        this.c.openTrade(this);
+        this.c.openTrade(this, "Trade");
     }
 }

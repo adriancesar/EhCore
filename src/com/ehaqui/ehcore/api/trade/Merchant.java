@@ -24,7 +24,7 @@
  */
 package com.ehaqui.ehcore.api.trade;
 
-import org.bukkit.craftbukkit.v1_4_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_5_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 
@@ -119,7 +119,7 @@ public class Merchant
      */
     public Merchant setCustomer(Player player)
     {
-        this.h.b_(player == null ? null : ((CraftPlayer) player).getHandle());
+        this.h.a(player == null ? null : ((CraftPlayer) player).getHandle());
         return this;
     }
     
