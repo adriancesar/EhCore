@@ -107,6 +107,16 @@ public class EhCorePlugin extends JavaPlugin
         {
             LogManager.info("SimpleVanish found. Enable Features!");
         }
+        
+        if(getServer().getPluginManager().getPlugin("xAuth") != null)
+        {
+            Settings.usexAuth = true;
+            LogManager.info("xAuth not found. Disable Features!");
+        }
+        else
+        {
+            LogManager.info("xAuth found. Enable Features!");
+        }
     }
     
     public static LogManager getlog()
