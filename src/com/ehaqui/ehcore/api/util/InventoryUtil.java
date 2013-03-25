@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -29,7 +30,7 @@ public class InventoryUtil
      * 
      * @param material
      *            item material
-     * @param enchantList 
+     * @param enchantList
      * @param items
      *            inventory contents
      * @return item count
@@ -37,25 +38,44 @@ public class InventoryUtil
     public static Integer getItemCount(ItemStack item, ItemStack[] items)
     {
         Material material = item.getType();
-        Map<Enchantment, Integer> enchantList = item.getEnchantments();
+        
+        List<Enchantment> enchantments = new ArrayList<Enchantment>();
+        for (Entry<Enchantment, Integer> me : item.getEnchantments().entrySet())
+        {
+            enchantments.add(me.getKey());
+        }
         
         int count = 0;
         for (int i = 0; i < items.length; i++)
         {
             if(items[i] != null && items[i].getType().equals(material) && items[i].getDurability() == 0 && items[i].getEnchantments().size() == 0)
             {
-                if(enchantList != null)
+                if(item.getEnchantments() != null)
                 {
-                    if(enchantList.equals(items[i].getEnchantments()))
-                        count += items[i].getAmount();
+                    int enchantCount = 0;
+                    
+                    for (Entry<Enchantment, Integer> me : items[i].getEnchantments().entrySet())
+                    {
+                        if(enchantments.contains(me.getKey()))
+                        {
+                            enchantCount++;
+                        }
+                    }
+                    
+                    if(enchantCount < enchantments.size())
+                    {
+                        continue;
+                    }
+                    
                 }
-                else
-                    count += items[i].getAmount();
+                
+                count += items[i].getAmount();
             }
         }
-        return count;
         
+        return count;
     }
+    
     
     /**
      * Adds an item to an inventory, drops it if there is no room.

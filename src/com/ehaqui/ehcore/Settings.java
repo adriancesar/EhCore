@@ -25,15 +25,19 @@ public class Settings
 
     public static boolean       useVanishNoPacket          = false;
     public static boolean       useSimpleVanish            = false;
-
+    public static boolean       usexAuth                   = false;
+    
     public static boolean       playSoundOnTeleport        = false;
 
     public static boolean       restrictions_can_dropitems = false;
     public static boolean       restrictions_can_pvp       = false;
-    public static String        motd                       = "..:: EhAqui ::.. Instável devido                               Ataques!!! :(";
+    public static String        motd                       = "..:: EhAqui ::.. Instï¿½vel devido                               Ataques!!! :(";
     
     
     public static String PREFIX_PERMISSION = "ehcore";
+
+
+    
     
     private final Storage config;
     private final DataKey root;

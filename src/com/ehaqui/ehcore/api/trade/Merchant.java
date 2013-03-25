@@ -24,7 +24,7 @@
  */
 package com.ehaqui.ehcore.api.trade;
 
-import org.bukkit.craftbukkit.v1_5_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_5_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 

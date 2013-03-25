@@ -26,9 +26,9 @@ package com.ehaqui.ehcore.api.trade;
 
 import java.io.Serializable;
 
-import net.minecraft.server.v1_5_R1.MerchantRecipe;
+import net.minecraft.server.v1_5_R2.MerchantRecipe;
 
-import org.bukkit.craftbukkit.v1_5_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_5_R2.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 
 
