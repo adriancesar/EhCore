@@ -1,10 +1,12 @@
 package com.ehaqui.ehcore.command;
 
+import java.io.File;
 import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.ehaqui.ehcore.EhCorePlugin;
@@ -42,7 +44,7 @@ public class CommandCore
         // Chunk
         int chunkloaded = 0;
         
-        for(World w : Bukkit.getWorlds())
+        for (World w : Bukkit.getWorlds())
             chunkloaded += w.getLoadedChunks().length;
         
         int chunkPercentage = ((chunkloaded * 100) / (getChunkLimit() * Bukkit.getOnlinePlayers().length));
@@ -66,59 +68,59 @@ public class CommandCore
             case 1:
                 limitByChunk = 9;
                 break;
-                
+            
             case 2:
                 limitByChunk = 25;
                 break;
-                
+            
             case 3:
                 limitByChunk = 49;
                 break;
-                
+            
             case 4:
                 limitByChunk = 81;
                 break;
-                
+            
             case 5:
                 limitByChunk = 121;
                 break;
-                
+            
             case 6:
                 limitByChunk = 169;
                 break;
-                
+            
             case 7:
                 limitByChunk = 225;
                 break;
-                
+            
             case 8:
                 limitByChunk = 289;
                 break;
-                
+            
             case 9:
                 limitByChunk = 361;
                 break;
-                
+            
             case 10:
                 limitByChunk = 441;
                 break;
-                
+            
             case 11:
                 limitByChunk = 529;
                 break;
-                
+            
             case 12:
                 limitByChunk = 625;
                 break;
-                
+            
             case 13:
                 limitByChunk = 729;
                 break;
-                
+            
             case 14:
                 limitByChunk = 841;
                 break;
-                
+            
             case 15:
                 limitByChunk = 961;
                 break;
@@ -188,4 +190,32 @@ public class CommandCore
         
         return wrapColour + "[" + colour + lagMeter + wrapColour + "]";
     }
+    
+    @Command(aliases = { "ehcore" },
+             modifiers = { "fix" },
+             usage = "fix [playername]",
+             permission = "ehcore.fix",
+             max = 2,
+             min = 2)
+    public void deletePlayerDatFile(CommandContext args, CommandSender sender)
+    {
+        String pName = args.getString(2);
+        
+        File BaseFolder = new File(Bukkit.getServer().getWorld("world").getWorldFolder(), "players");
+        File playerFile = new File(BaseFolder, pName + ".dat");
+        
+        if(playerFile.exists())
+        {
+            playerFile.delete();
+            
+            Messaging.send(sender, "Arquivo referente ao Player '"+ pName +"' apagado");
+        }
+        else
+        {
+            Messaging.sendError(sender, "Arquivo referente ao Player '"+ pName +"' NAO ENCONTRADO");
+        }
+    }
+    
+    
+    
 }
