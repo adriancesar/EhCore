@@ -24,11 +24,11 @@
  */
 package com.ehaqui.ehcore.api.trade;
 
-import net.minecraft.server.v1_5_R2.EntityHuman;
-import net.minecraft.server.v1_5_R2.EntityPlayer;
-import net.minecraft.server.v1_5_R2.IMerchant;
-import net.minecraft.server.v1_5_R2.MerchantRecipe;
-import net.minecraft.server.v1_5_R2.MerchantRecipeList;
+import net.minecraft.server.v1_5_R3.EntityHuman;
+import net.minecraft.server.v1_5_R3.EntityPlayer;
+import net.minecraft.server.v1_5_R3.IMerchant;
+import net.minecraft.server.v1_5_R3.MerchantRecipe;
+import net.minecraft.server.v1_5_R3.MerchantRecipeList;
 
 
 public class NMSMerchant implements IMerchant

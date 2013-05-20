@@ -35,47 +35,71 @@ public class InventoryUtil
      *            inventory contents
      * @return item count
      */
-    public static Integer getItemCount(ItemStack item, ItemStack[] items)
+    
+    public static int getItemCount(ItemStack itemToCount, ItemStack[] content)
     {
-        Material material = item.getType();
+        int has = 0;
         
-        List<Enchantment> enchantments = new ArrayList<Enchantment>();
-        for (Entry<Enchantment, Integer> me : item.getEnchantments().entrySet())
+        if (itemToCount.getEnchantments().size() > 0)
         {
-            enchantments.add(me.getKey());
-        }
-        
-        int count = 0;
-        for (int i = 0; i < items.length; i++)
-        {
-            if(items[i] != null && items[i].getType().equals(material) && items[i].getDurability() == 0 && items[i].getEnchantments().size() == 0)
+            // Extrair encantamentos do item para comparar
+            HashMap<Enchantment, Integer> itemToCountEnchants = new HashMap<Enchantment, Integer>();
+            for (Entry<Enchantment, Integer> enchant : itemToCount.getEnchantments().entrySet())
             {
-                if(item.getEnchantments() != null)
+                itemToCountEnchants.put(enchant.getKey(), enchant.getValue());
+            }
+            
+            for (ItemStack item : content)
+            {
+                // Checa se é o mesmo item
+                if ((item != null) && (item.getTypeId() == itemToCount.getTypeId()) && (item.getAmount() > 0))
                 {
-                    int enchantCount = 0;
-                    
-                    for (Entry<Enchantment, Integer> me : items[i].getEnchantments().entrySet())
+                    // Checa se o total de encantamento é o mesmo
+                    if (item.getEnchantments().size() == itemToCount.getEnchantments().size())
                     {
-                        if(enchantments.contains(me.getKey()))
+                        // Extrai os ecantamentos do item a ser comparado
+                        HashMap<Enchantment, Integer> itemToCompareEnchants = new HashMap<Enchantment, Integer>();
+                        for (Entry<Enchantment, Integer> enchant : item.getEnchantments().entrySet())
                         {
-                            enchantCount++;
+                            itemToCompareEnchants.put(enchant.getKey(), enchant.getValue());
+                        }
+                        
+                        for (Entry<Enchantment, Integer> enchant : itemToCountEnchants.entrySet())
+                        {
+                            // Comprara o encantamento
+                            if (itemToCompareEnchants.containsKey(enchant.getKey()))
+                            {
+                                // Compara o level do encantamento
+                                if (itemToCompareEnchants.get(enchant.getKey()) == enchant.getValue())
+                                {
+                                    // Remove da lista
+                                    itemToCompareEnchants.remove(enchant.getKey());
+                                }
+                            }
+                        }
+                        
+                        if (itemToCompareEnchants.size() == 0)
+                        {
+                            has += item.getAmount();
                         }
                     }
-                    
-                    if(enchantCount < enchantments.size())
-                    {
-                        continue;
-                    }
-                    
                 }
-                
-                count += items[i].getAmount();
             }
         }
+        else
+        {
+            for (ItemStack item : content)
+            {
+                if ((item != null) && (item.getTypeId() == itemToCount.getTypeId()) && (item.getAmount() > 0))
+                {
+                    has += item.getAmount();
+                }
+            }
+            
+        }
         
-        return count;
+        return has;
     }
-    
     
     /**
      * Adds an item to an inventory, drops it if there is no room.
@@ -92,7 +116,7 @@ public class InventoryUtil
     {
         ItemStack remaining = inventory.addItem(itemStack).get(0);
         
-        if(remaining != null)
+        if (remaining != null)
         {
             dropLocation.getWorld().dropItemNaturally(dropLocation, remaining);
             return true;
@@ -115,7 +139,7 @@ public class InventoryUtil
         
         ItemStack remaining = inventory.removeItem(itemStack).get(0);
         
-        if(remaining != null)
+        if (remaining != null)
         {
             throw new Exception("failed to remove " + itemStack + " from the inventory");
         }
@@ -139,7 +163,7 @@ public class InventoryUtil
         Integer toDelete = toRemove;
         Material material = item.getType();
         
-        if(getItemCount(item, inventory.getContents()) < toDelete)
+        if (getItemCount(item, inventory.getContents()) < toDelete)
             return false;
         
         HashMap<Integer, ? extends ItemStack> all = inventory.all(material);
@@ -152,7 +176,7 @@ public class InventoryUtil
             
             int amount = itemStack.getAmount();
             
-            if(amount <= toDelete)
+            if (amount <= toDelete)
             {
                 toDelete -= amount;
                 // clear the slot, all used up
@@ -167,14 +191,14 @@ public class InventoryUtil
             }
             
             // Bail when done
-            if(toDelete <= 0)
+            if (toDelete <= 0)
             {
                 break;
             }
             
         }
         
-        if(toDelete > 0)
+        if (toDelete > 0)
         {
             LogManager.severe("Failed to remove " + toDelete + " " + material + " from inventory");
             return false;
@@ -195,19 +219,19 @@ public class InventoryUtil
         for (int i = first; i < last; i++)
         {
             ItemStack item1 = items[i];
-            if((item1 != null) && (item1.getAmount() > 0) && (item1.getMaxStackSize() != 1))
+            if ((item1 != null) && (item1.getAmount() > 0) && (item1.getMaxStackSize() != 1))
             {
-                if(item1.getAmount() < item1.getMaxStackSize())
+                if (item1.getAmount() < item1.getMaxStackSize())
                 {
                     int needed = item1.getMaxStackSize() - item1.getAmount();
                     for (int j = i + 1; j < last; j++)
                     {
                         ItemStack item2 = items[j];
-                        if((item2 != null) && (item2.getAmount() > 0) && (item1.getMaxStackSize() != 1))
+                        if ((item2 != null) && (item2.getAmount() > 0) && (item1.getMaxStackSize() != 1))
                         {
-                            if((item2.getTypeId() == item1.getTypeId()) && (item1.getDurability() == item2.getDurability()) && (item1.getEnchantments().equals(item2.getEnchantments())))
+                            if ((item2.getTypeId() == item1.getTypeId()) && (item1.getDurability() == item2.getDurability()) && (item1.getEnchantments().equals(item2.getEnchantments())))
                             {
-                                if(item2.getAmount() > needed)
+                                if (item2.getAmount() > needed)
                                 {
                                     item1.setAmount(item1.getMaxStackSize());
                                     item2.setAmount(item2.getAmount() - needed);
@@ -250,16 +274,16 @@ public class InventoryUtil
         List<ItemStack> returns = new ArrayList<ItemStack>();
         List<Recipe> recipes = Bukkit.getRecipesFor(item);
         
-        if(recipes.size() <= 0)
+        if (recipes.size() <= 0)
             return returns;
         
         Recipe recipe = null;
         
         for (Recipe r : recipes)
         {
-            if(r.getResult().isSimilar(item))
+            if (r.getResult().isSimilar(item))
             {
-                if(r.getResult().getAmount() != item.getAmount())
+                if (r.getResult().getAmount() != item.getAmount())
                     continue;
                 
                 recipe = r;
@@ -267,28 +291,28 @@ public class InventoryUtil
             }
         }
         
-        if(recipe == null)
+        if (recipe == null)
             return returns;
         
-        if(recipe instanceof ShapedRecipe)
+        if (recipe instanceof ShapedRecipe)
         {
             ShapedRecipe sr = (ShapedRecipe) recipe;
             Map<Character, ItemStack> chart = sr.getIngredientMap();
             
             for (ItemStack is : chart.values())
             {
-                if(is != null)
+                if (is != null)
                     returns.add(is);
             }
         }
-        else if(recipe instanceof ShapelessRecipe)
+        else if (recipe instanceof ShapelessRecipe)
         {
             ShapelessRecipe sr = (ShapelessRecipe) recipe;
             List<ItemStack> x = sr.getIngredientList();
             
             for (ItemStack is : x)
             {
-                if(is != null)
+                if (is != null)
                     returns.add(is);
             }
         }

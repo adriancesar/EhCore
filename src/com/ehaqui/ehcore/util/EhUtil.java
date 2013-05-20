@@ -62,7 +62,7 @@ public class EhUtil
             line = line.replaceAll(String.format("&%c", color.getChar()), color.toString());
         }
 
-        return line;
+        return line.replace("\\n", "\n");
     }
 
     /**

@@ -15,16 +15,16 @@ import org.bukkit.plugin.Plugin;
 public class EhDatabase
 {
     
-    private Connection                                conn    = null;
-    private Statement                                 statement;
+    private Connection                                conn      = null;
+    private Statement                                 statement = null;                                            ;
     //               rows      col_name       value
-    private HashMap<Integer, HashMap<String, Object>> rows    = new HashMap<Integer, HashMap<String, Object>>();
-    private HashMap<String, Object>                   column  = new HashMap<String, Object>();
+    private HashMap<Integer, HashMap<String, Object>> rows      = new HashMap<Integer, HashMap<String, Object>>();
+    private HashMap<String, Object>                   column    = new HashMap<String, Object>();
     
-    private int                                       numRows = 0;
+    private int                                       numRows   = 0;
     
     private Plugin                                    plugin;
-    private DatabaseType                              type;
+    private DatabaseType                              type      = DatabaseType.SQLITE;
     
     private String                                    db_host;
     private String                                    db_port;
@@ -42,13 +42,13 @@ public class EhDatabase
         type = DatabaseType.MYSQL;
         
         
-        if("".equals(host) || host == null)
+        if ("".equals(host) || host == null)
             db_host = "localhost";
         else
             db_host = host;
         
         
-        if("".equals(port) || port == null)
+        if ("".equals(port) || port == null)
             db_port = "3306";
         else
             db_port = port;
@@ -72,7 +72,7 @@ public class EhDatabase
         
         plugin.getLogger().info(mysql_prefix + "Chegando conexao");
         
-        if(getConnection() != null)
+        if (getConnection() != null)
         {
             plugin.getLogger().info(mysql_prefix + "Conectado!");
         }
@@ -82,7 +82,7 @@ public class EhDatabase
     
     public Connection getConnection()
     {
-        if(conn == null)
+        if (conn == null)
         {
             return open();
         }
@@ -122,16 +122,13 @@ public class EhDatabase
     
     public void close()
     {
-        if(conn != null)
+        try
         {
-            try
-            {
-                statement.close();
-                conn.close();
-            } catch (Exception e)
-            {
-                plugin.getLogger().warning(e.getMessage());
-            }
+            statement.close();
+            conn.close();
+        } catch (Exception e)
+        {
+            plugin.getLogger().warning(e.getMessage());
         }
     }
     
@@ -144,7 +141,7 @@ public class EhDatabase
             dbm = this.open().getMetaData();
             ResultSet tables = dbm.getTables(null, null, tableName, null);
             
-            if(tables.next())
+            if (tables.next())
                 return true;
             else
                 return false;
@@ -165,7 +162,7 @@ public class EhDatabase
             dbm = this.open().getMetaData();
             ResultSet tables = dbm.getTables(null, null, tableName, null);
             
-            if(!tables.next())
+            if (!tables.next())
             {
                 plugin.getLogger().info("Criando tablela '" + tableName + "'");
                 update(sql);
@@ -186,7 +183,7 @@ public class EhDatabase
             
             for (int i = 0; i < columns.length; i++)
             {
-                if(i != 0)
+                if (i != 0)
                 {
                     query += ",";
                 }
@@ -195,6 +192,8 @@ public class EhDatabase
             }
             
             query += ")";
+            
+            lastQuery = query;
             statement.execute(query);
             
         } catch (Exception e)
@@ -209,12 +208,16 @@ public class EhDatabase
         try
         {
             statement = conn.createStatement();
-            ResultSet results = statement.executeQuery(String.format(query, txt));
+            
+            query = String.format(query, txt);
+            lastQuery = query;
+
+            ResultSet results = statement.executeQuery(query);
             return results;
             
         } catch (Exception e)
         {
-            if(!e.getMessage().contains("not return ResultSet") || (e.getMessage().contains("not return ResultSet") && query.startsWith("SELECT")))
+            if (!e.getMessage().contains("not return ResultSet") || (e.getMessage().contains("not return ResultSet") && query.startsWith("SELECT")))
             {
                 plugin.getLogger().warning(e.getMessage());
             }
@@ -227,16 +230,19 @@ public class EhDatabase
         HashMap<String, Object> column = new HashMap<String, Object>();
         
         statement = conn.createStatement();
-        ResultSet results = statement.executeQuery(String.format(query, txt));
         
-        if(results != null)
+        query = String.format(query, txt);
+        lastQuery = query;
+
+        ResultSet results = statement.executeQuery(query);        
+        if (results != null)
         {
             int columns = results.getMetaData().getColumnCount();
             String columnNames = "";
             
             for (int i = 1; i <= columns; i++)
             {
-                if(!"".equals(columnNames))
+                if (!"".equals(columnNames))
                 {
                     columnNames += ",";
                 }
@@ -270,16 +276,19 @@ public class EhDatabase
         {
             statement = conn.createStatement();
             
-            ResultSet results = statement.executeQuery(String.format(query, txt));
+            query = String.format(query, txt);
+            lastQuery = query;
+
+            ResultSet results = statement.executeQuery(query);
             
-            if(results != null)
+            if (results != null)
             {
                 int columns = results.getMetaData().getColumnCount();
                 String columnNames = "";
                 
                 for (int i = 1; i <= columns; i++)
                 {
-                    if(!"".equals(columnNames))
+                    if (!"".equals(columnNames))
                     {
                         columnNames += ",";
                     }
@@ -318,16 +327,20 @@ public class EhDatabase
         numRows = 0;
         
         statement = conn.createStatement();
-        ResultSet results = statement.executeQuery(String.format(query, txt));
         
-        if(results != null)
+        query = String.format(query, txt);
+        lastQuery = query;
+
+        ResultSet results = statement.executeQuery(query);
+        
+        if (results != null)
         {
             int columns = results.getMetaData().getColumnCount();
             String columnNames = "";
             
             for (int i = 1; i <= columns; i++)
             {
-                if(!"".equals(columnNames))
+                if (!"".equals(columnNames))
                 {
                     columnNames += ",";
                 }
@@ -359,6 +372,12 @@ public class EhDatabase
         }
     }
     
+    /**
+     * 
+     * @param query
+     * @param txt
+     * @return Valores rows, (col_name, value)
+     */
     public HashMap<Integer, HashMap<String, Object>> selectColFast(String query, Object... txt)
     {
         rows.clear();
@@ -369,16 +388,19 @@ public class EhDatabase
         {
             statement = conn.createStatement();
             
-            ResultSet results = statement.executeQuery(String.format(query, txt));
+            query = String.format(query, txt);
+            lastQuery = query;
+
+            ResultSet results = statement.executeQuery(query);
             
-            if(results != null)
+            if (results != null)
             {
                 int columns = results.getMetaData().getColumnCount();
                 String columnNames = "";
                 
                 for (int i = 1; i <= columns; i++)
                 {
-                    if(!"".equals(columnNames))
+                    if (!"".equals(columnNames))
                     {
                         columnNames += ",";
                     }
@@ -417,56 +439,58 @@ public class EhDatabase
     
     public int insert(String query, Object... txt) throws SQLException
     {
+        query = String.format(query, txt);
+        lastQuery = query;
+        
         int id = 0;
         
         statement = conn.createStatement();
-        statement.executeUpdate(String.format(query, txt), Statement.RETURN_GENERATED_KEYS);
         
-        ResultSet rs = statement.getGeneratedKeys();
+        statement.executeUpdate(query);
         
-        while (rs.next())
-            id = rs.getInt(1);
-        
-        rs.close();
+        id = getLastID();
         
         return id;
     }
     
     public int insertFast(String query, Object... txt)
     {
+        query = String.format(query, txt);
         int id = 0;
         
         try
         {
             statement = conn.createStatement();
-            statement.executeUpdate(String.format(query, txt), Statement.RETURN_GENERATED_KEYS);
+            statement.executeUpdate(query);
             
-            ResultSet rs = statement.getGeneratedKeys();
-            
-            while (rs.next())
-                id = rs.getInt(1);
-            
-            rs.close();
+            id = getLastID();
             
         } catch (Exception e)
         {
             e.printStackTrace();
         }
+        
         return id;
     }
     
     public void update(String query, Object... txt) throws SQLException
     {
+        query = String.format(query, txt);
+        lastQuery = query;
+        
         statement = conn.createStatement();
-        statement.executeUpdate(String.format(query, txt));
+        statement.executeUpdate(query);
     }
     
     public void updateFast(String query, Object... txt)
     {
+        query = String.format(query, txt);
+        lastQuery = query;
+        
         try
         {
             statement = conn.createStatement();
-            statement.executeUpdate(String.format(query, txt));
+            statement.executeUpdate(query);
             
         } catch (SQLException e)
         {
@@ -490,7 +514,7 @@ public class EhDatabase
             builder.append(key);
             builder.append("`");
             
-            if(size < data.size())
+            if (size < data.size())
             {
                 builder.append(", ");
                 size++;
@@ -506,7 +530,7 @@ public class EhDatabase
             builder.append(key.toString());
             builder.append("'");
             
-            if(size < data.size())
+            if (size < data.size())
             {
                 builder.append(", ");
                 size++;
@@ -516,6 +540,31 @@ public class EhDatabase
         builder.append(")");
         
         return builder.toString();
+    }
+    
+    private int getLastID() throws SQLException
+    {
+        ResultSet rs = null;
+        
+        switch (type)
+        {
+            case MYSQL:
+                rs = statement.executeQuery("SELECT LAST_INSERT_ID()");
+                break;
+            
+            case SQLITE:
+                rs = statement.executeQuery("SELECT last_insert_rowid()");
+                break;
+        }
+        
+        int id = 0;
+        
+        while (rs.next())
+            id = rs.getInt(1);
+        
+        rs.close();
+        
+        return id;
     }
 }
 

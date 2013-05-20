@@ -61,7 +61,7 @@ public class LogManager
         log.severe(pluginName + " " + text);
     }
 
-    public void severe(String text, Object... txt)
+    public static void severe(String text, Object... txt)
     {
         log.severe(pluginName + " " + String.format(text, txt));
     }
@@ -76,6 +76,13 @@ public class LogManager
         if(debug)
         {
             log.info("[DEBUG]" + pluginName + " " + text);
+        }
+    }
+    public static void debug(String text, Object... txt)
+    {
+        if(debug)
+        {
+            log.info("[DEBUG]" + pluginName + " " + String.format(text, txt));
         }
     }
 

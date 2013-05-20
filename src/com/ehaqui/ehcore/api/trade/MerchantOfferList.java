@@ -26,8 +26,8 @@ package com.ehaqui.ehcore.api.trade;
 
 import java.util.ArrayList;
 
-import net.minecraft.server.v1_5_R2.MerchantRecipe;
-import net.minecraft.server.v1_5_R2.MerchantRecipeList;
+import net.minecraft.server.v1_5_R3.MerchantRecipe;
+import net.minecraft.server.v1_5_R3.MerchantRecipeList;
 
 
 public class MerchantOfferList extends ArrayList<MerchantOffer>
